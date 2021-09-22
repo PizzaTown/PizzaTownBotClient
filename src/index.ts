@@ -1,17 +1,50 @@
+import config from '../config.json';
+import Client from "./client/Client";
+import { WebSocketEnum } from './constants/enums';
+import https from 'https';
 
-import { log } from "console";
-import { createRequire } from "module"; // Bring in the ability to create the 'require' method
-import { fetchLatestMessage, fetchMessage, fetchMessageSpecific } from "./utils/message.js";
-const require = createRequire(import.meta.url); // construct the require method
-const config = require("../config.json") // use the require method
+const client = new Client();
 
-const message: Message[] = await fetchMessage(config.token.beta, 'YOUR_BOT_NAME_HERE', 'CHANNEL_ID_HERE');
-const latestMessage: Message | undefined = await fetchLatestMessage(config.token.beta, 'YOUR_BOT_NAME_HERE', 'CHANNEL_ID_HERE');
-const specificMessage = await fetchMessageSpecific(config.token.beta, 'YOUR_BOT_NAME_HERE', 'CHANNEL_ID_HERE', 'MESSAGE_ID_HERE')
+client.on('ready', () => {
+    console.log('Bot has logged in!')
+});
 
-//log(message);
+client.on('messageCreate', async (message) => {
+    console.log(message.content);
+    console.log(message.channel_id)
+    if (message.content === 'Testing') {
+        await createMessage('This is Rocky\'s Own Discord Bot Library working!', message.channel_id)
+    };
+})
+client.connect(config.token.beta);
 
-log(latestMessage)
+async function createMessage(content: string, channelID: string) {
+    const data = {
+        content,
+        tts: false
+    }
 
-//log(specificMessage?.content);
+    const options = {
+        hostname: 'discord.com',
+        port: 443,
+        path: `/api/v9/channels/${channelID}/messages`,
+        method: 'POST',
+        headers: {
+            "Content-Type": 'application/json',
+            "Authorization": `Bot ${config.token.beta}`
+        },
+    }
 
+    const req = https.request(options, res => {
+        res.on('data', d => {
+            process.stdout.write(d)
+        })
+    })
+
+    req.on('error', error => {
+        console.error(error)
+    })
+
+    req.write(JSON.stringify(data))
+    req.end()
+}
