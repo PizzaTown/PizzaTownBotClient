@@ -5,13 +5,13 @@ import { fetchLatestMessage, fetchMessage, fetchMessageSpecific } from "./utils/
 const require = createRequire(import.meta.url); // construct the require method
 const config = require("../config.json") // use the require method
 
-const message: Message[] = await fetchMessage(config.token.beta, 'PizzaTown Beta', '889928301366366210');
-const latestMessage: Message | undefined = await fetchLatestMessage(config.token.beta, 'PizzaTown Beta', '889928301366366210');
-const specificMessage = await fetchMessageSpecific(config.token.beta, 'PizzaTown Beta', '889928301366366210', '890134487093084210')
+const message: Message[] = await fetchMessage(config.token.beta, 'YOUR_BOT_NAME_HERE', 'CHANNEL_ID_HERE');
+const latestMessage: Message | undefined = await fetchLatestMessage(config.token.beta, 'YOUR_BOT_NAME_HERE', 'CHANNEL_ID_HERE');
+const specificMessage = await fetchMessageSpecific(config.token.beta, 'YOUR_BOT_NAME_HERE', 'CHANNEL_ID_HERE', 'MESSAGE_ID_HERE')
 
-log(message);
+//log(message);
 
-log(latestMessage?.content)
+log(latestMessage)
 
-log(specificMessage?.content);
+//log(specificMessage?.content);
 
