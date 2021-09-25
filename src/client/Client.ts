@@ -5,9 +5,11 @@ import ClientUser from "./ClientUser";
 export default class Client extends EventEmitter {
     private socket: WebSocketManager = new WebSocketManager(this);
     private _user: ClientUser;
+    private token: string;
 
     async connect(token: string) {
         this.socket.connect(token);
+        this.token = token;
     }
 
     set user($user: ClientUser) {
@@ -16,5 +18,9 @@ export default class Client extends EventEmitter {
 
     get user() {
         return this._user;
+    }
+
+    get getAuth(): string {
+        return this.token;
     }
 }
