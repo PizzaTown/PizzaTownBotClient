@@ -1,8 +1,8 @@
 import Client from "../client/Client";
-import ClientUser from "../client/ClientUser";
-import { TextChannelMessage } from "../interfaces/Message";
 import { Payload } from "../interfaces/payloads";
 import https from 'https'
+import { TextChannelUser } from "../@types";
+import { MessageOptions } from "child_process";
 
 export default function(client: Client, payload: Payload) {
     const msg = payload.d;
@@ -10,7 +10,7 @@ export default function(client: Client, payload: Payload) {
         content: msg.content,
         channel: {
             id: msg.channel_id,
-            async send(o: TextChannelMessage) {
+            async send(o: any) {
                 const data = {
                     content: o.content || null,
                     tts: o.tts || null,
@@ -62,10 +62,11 @@ export default function(client: Client, payload: Payload) {
             id: msg.author.id,
             discriminator: msg.author.discriminator,
             avatar: msg.author.avatar,
+            bot: msg.author.bot,
             displayAvatar(size: number = 1024) {
                 return `https://cdn.discordapp.com/avatars/361212545924595712/${this.avatar}.webp?size=${size}`
             }
-        },
+        } as TextChannelUser,
         attachments: msg.attachements || [],
     });
 }

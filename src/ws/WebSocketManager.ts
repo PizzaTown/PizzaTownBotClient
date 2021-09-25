@@ -32,10 +32,17 @@ export default class WebSocketManager {
                 }
                 if (event) {
                     try {
-                    const { default: module } = await import(`../handlers/${event}.js`);
-                    module(this.client, payload);
-                    } catch(err) {
-                        console.log(err); 
+                        let eventName: string = event.toLowerCase();
+                        if (event.includes('_CREATE')) {
+                            eventName = event.toLowerCase().replace('_create', 'Create');
+                        }
+                        if (event.includes('_UPDATE')) {
+                            eventName = event.toLowerCase().replace('_update', 'Update');
+                        }
+                        const { default: module } = await import(`../handlers/${eventName}.js`);
+                        module(this.client, payload);
+                    } catch (err) {
+                        console.log(err);
                     }
                 }
 

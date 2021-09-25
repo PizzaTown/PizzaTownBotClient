@@ -32,7 +32,7 @@
       "target": "ESNext",
       "types": [
         "node",
-        "jest"
+        "jest",
       ]
     },
     "include": ["src/**/*", "package.json"],

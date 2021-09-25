@@ -4,7 +4,8 @@
   "description": "PizzaTown's Discord Client System",
   "main": "index.js",
   "scripts": {
-    "start": "npx tsc && node ./dist/src/examples/index.js"
+    "start": "npx tsc && node ./dist/src/examples/index.js",
+    "build": "npx tsc && cp -r src/@types dist/src/"
   },
   "author": "Rocky43007",
   "license": "ISC",

@@ -23,4 +23,5 @@ export default class Client extends EventEmitter {
     get getAuth(): string {
         return this.token;
     }
+ 
 }

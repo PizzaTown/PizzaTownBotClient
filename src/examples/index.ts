@@ -1,6 +1,6 @@
 import config from '../../config.json';
 import Client from "../client/Client";
-import { TextChannelMessage } from '../interfaces/Message';
+import { Message } from '../@types';
 
 const client = new Client();
 const newlineSpaceRegex = /\n +/g;
@@ -12,16 +12,26 @@ client.on('ready', () => {
     console.log('Bot has logged in!')
 });
 
-client.on('messageCreate', async (message) => {
-    console.log(message)
+const prefix = '!!';
+
+function sanitizeMessage(prefix: string, messageContent: string): string {
+    return messageContent
+      .replace('/ +/g', ' ')
+      .replace(prefix, '')
+      .trim();
+  }
+
+client.on('messageCreate', async (message: Message) => {
     if (message.guild.id !== '746435442521538730') return;
-    if (message.content === 'Testing') {
+    if (message.author.bot) return;
+    const [commandName, ...args] = sanitizeMessage(prefix, message.content).split(' ');
+    if (commandName === 'Testing') {
         await message.channel.send('This is Rocky\'s Own Discord Bot Library working!')
     };
-    if (message.content === 'Avatar') {
+    if (commandName === 'Avatar') {
         await message.channel.send(message.author.displayAvatar())
     }
-    if (message.content === 'Embed') {
+    if (commandName === 'Embed') {
         await message.channel.send({embeds: [{
             color: parseInt('#13d6c9'.replace('#', ''), 16),
             title: 'Donate to PizzaTown!',
@@ -35,5 +45,9 @@ client.on('messageCreate', async (message) => {
             Thank you for donating and join the **[Support Server](https://discord.gg/rdGrcvW)** to chat, get xp and gain the discord perks from **Patreon** and the **[PizzaTown Website](https://pizzatown.ml/donate)**!`),
           }]})
     }
+    if (commandName.toLowerCase() === 'msg-args') await message.channel.send(`${args[0]}`)
+})
+
+client.on('guildCreate', (guild) => {
 })
 client.connect(config.token.beta);
