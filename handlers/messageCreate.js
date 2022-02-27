@@ -1,16 +1,17 @@
-import Client from "../client/Client";
-import { Payload } from "../interfaces/payloads";
-import https from 'https'
-import { TextChannelUser } from "../@types";
-import { MessageOptions } from "child_process";
+const https = require('https');
 
-export default function(client: Client, payload: Payload) {
+/**
+ * 
+ * @param {import('../@types/client/Client').Client} client 
+ * @param {*} payload 
+ */
+module.exports = function (client, payload) {
     const msg = payload.d;
     client.emit('messageCreate', {
         content: msg.content,
         channel: {
             id: msg.channel_id,
-            async send(o: any) {
+            async send(o) {
                 const data = {
                     content: o.content || null,
                     tts: o.tts || null,
@@ -24,7 +25,7 @@ export default function(client: Client, payload: Payload) {
                 const options = {
                     hostname: 'discord.com',
                     port: 443,
-                    path: `/api/v9/channels/${this.id}/messages`,
+                    path: `/api/v10/channels/${this.id}/messages`,
                     method: 'POST',
                     headers: {
                         "Content-Type": 'application/json',
@@ -32,13 +33,12 @@ export default function(client: Client, payload: Payload) {
                     },
                 }
             
-                const req = https.request(options, (res: any) => {
-                    res.on('data', (d: any) => {
-                        process.stdout.write(d)
+                const req = https.request(options, (res) => {
+                    res.on('data', (d) => {
                     })
                 })
             
-                req.on('error', (error: string) => {
+                req.on('error', (error) => {
                     console.error(error)
                 })
             
@@ -63,10 +63,10 @@ export default function(client: Client, payload: Payload) {
             discriminator: msg.author.discriminator,
             avatar: msg.author.avatar,
             bot: msg.author.bot,
-            displayAvatar(size: number = 1024) {
+            displayAvatar(size = 1024) {
                 return `https://cdn.discordapp.com/avatars/361212545924595712/${this.avatar}.webp?size=${size}`
             }
-        } as TextChannelUser,
+        },
         attachments: msg.attachements || [],
     });
 }

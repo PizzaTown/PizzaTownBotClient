@@ -1,5 +1,1 @@
-node_modules
-dist
-config.json
-package-lock.json
-guild_data.json
+node_modules/

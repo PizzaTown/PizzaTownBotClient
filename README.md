@@ -5,14 +5,6 @@ Welcome to Rocky's own Discord Client. This is his attempt at trying to understa
 
 Steps:
 
-1. Make a config.json file that looks like this:
-```json
-{
-  "token": {
-        "beta": "YOUR_DISCORD_BOT_TOKEN_HERE"
-    },
-}
-```
-2. Replace `YOUR_DISCORD_BOT_TOKEN_HERE` with your actual Discord Bot Token.
+1. Replace `YOUR_DISCORD_BOT_TOKEN_HERE` with your actual Discord Bot Token in `test.js`.
 
-3. Test using `npm start` to try the `index.ts` file that Rocky has written for testing.
+2. Test using `npm start` to try the `test.js` file that Rocky has written for testing.
