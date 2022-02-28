@@ -4,6 +4,13 @@ class ClientUser {
         this.client = client;
     }
 
+    /**
+     * 
+     * @param {import("../@types/client/Client").Presence} data - Presence Data
+     * @returns Setting of User's presence for bot.
+     * 
+     * @example client.user.setPresence({ activities: [{ name: 'with PizzaTownClient' }], status: "online"});
+     */
     setPresence(data) {
         return this._set(data);
     }
@@ -11,21 +18,12 @@ class ClientUser {
     _set(presence) {
         const packet = this._parse(presence);
         this._patch(packet);
-        /*if (typeof presence.shardId === 'undefined') {
-            this.client.ws.broadcast({ op: GatewayOpcodes.PresenceUpdate, d: packet });
-        } else if (Array.isArray(presence.shardId)) {
-            for (const shardId of presence.shardId) {
-                this.client.ws.shards.get(shardId).send({ op: GatewayOpcodes.PresenceUpdate, d: packet });
-            }
-        } else {
-            this.client.ws.shards.get(presence.shardId).send({ op: GatewayOpcodes.PresenceUpdate, d: packet });
-        }*/
         return this;
     }
 
     /**
    * Parses presence data into a packet ready to be sent to Discord
-   * @param {any} presence The data to parse
+   * @param {import("../@types/client/Client").Presence} presence The data to parse
    * @private
    */
     _parse({ status, since, afk, activities }) {

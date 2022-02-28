@@ -1,9 +1,13 @@
 import EventEmitter from "events"
-type Presence = {
+export type Presence = {
     activities: {
         name: string,
+        type?: number,
+        url?: string,
     }[],
-    status: "online" | "idle" | "dnd" | "invisible" | "offline"
+    status: "online" | "idle" | "dnd" | "invisible" | "offline",
+    afk?: boolean,
+    since: number,
 }
 export interface ClientUser {
     verified: boolean,
@@ -15,9 +19,7 @@ export interface ClientUser {
     discriminator: string,
     bot: boolean,
     avatar: string
-    user: {
-        setPresence(data: Presence): boolean,
-    }
+    setPresence(data: Presence): boolean,
 }
 
 export interface Client extends EventEmitter {
@@ -26,3 +28,5 @@ export interface Client extends EventEmitter {
     getAuth(): string
     token: string,
 }
+
+export type Snowflake = string;
