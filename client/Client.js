@@ -1,4 +1,5 @@
 const EventEmitter = require('events');
+const RESTManager = require('../rest/RESTManager');
 const WebSocketManager = require('../ws/WebSocketManager');
 const ClientUser = require('./ClientUser');
 
@@ -25,6 +26,11 @@ class Client extends EventEmitter {
 
     get socket() {
         return this.socket;
+    }
+
+    get rest() {
+        this._rest = new RESTManager();
+        return this._rest;
     }
 }
 

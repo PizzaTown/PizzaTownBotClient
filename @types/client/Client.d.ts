@@ -1,4 +1,6 @@
 import EventEmitter from "events"
+import WebSocketManager from "../../ws/WebSocketManager"
+import { RESTManager } from "../api/REST"
 export type Presence = {
     activities: {
         name: string,
@@ -26,7 +28,11 @@ export interface Client extends EventEmitter {
     connect(token: string): Promise<Boolean>
     user(): ClientUser
     getAuth(): string
-    token: string,
+    socket: {
+        ws: WebSocket
+    }
+    token: string
+    rest: RESTManager
 }
 
 export type Snowflake = string;

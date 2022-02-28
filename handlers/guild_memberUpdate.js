@@ -6,5 +6,5 @@
  */
 
 module.exports = function (client) {
-    client.emit('guildCreate');
+    client.emit('guildMemberUpdate');
 };

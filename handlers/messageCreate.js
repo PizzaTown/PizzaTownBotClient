@@ -7,6 +7,7 @@ const https = require('https');
  * 
  * @returns {import('../@types/structures/Messages').TextChannelMessage} TextChannelMessage Data
  */
+
 module.exports = function (client, payload) {
     const msg = payload.d;
     client.emit('messageCreate', {
@@ -30,28 +31,7 @@ module.exports = function (client, payload) {
                     data.content = o;
                 }
 
-                const options = {
-                    hostname: 'discord.com',
-                    port: 443,
-                    path: `/api/v10/channels/${this.id}/messages`,
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": 'application/json',
-                        "Authorization": `Bot ${client.getAuth}`
-                    },
-                }
-
-                const req = https.request(options, (res) => {
-                    res.on('data', (d) => {
-                    })
-                })
-
-                req.on('error', (error) => {
-                    console.error(error)
-                })
-
-                req.write(JSON.stringify(data))
-                req.end()
+                client.rest.run(`/api/v10/channels/${this.id}/messages`, data, "POST")
             }
         },
         guild: {
