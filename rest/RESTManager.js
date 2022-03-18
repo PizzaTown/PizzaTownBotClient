@@ -1,5 +1,7 @@
-const EventEmitter = require('events');
+const { throws } = require('assert');
 const https = require('https');
+let counter = 0;
+
 
 class RESTManager {
     /**
@@ -8,7 +10,7 @@ class RESTManager {
      */
     constructor() {
         this.queueArr = [];
-        this.counter = 0;
+        this.counter = counter;
     }
 
     get queue() {
@@ -20,11 +22,11 @@ class RESTManager {
     }
     /**
      * 
-     * @param {string} url Endpoint URL
-     * @param {import('../@types/api/REST').APIInteractionData | import('../@types/api/REST').APIInteractionEditData | import('../@types/api/REST').APIMessageData} data Data that's being sent.
-     * @param {import('../@types/api/REST').APIHTTPSMethods} method REST Method
+     * @param {string} url - Endpoint URL
+     * @param {import('../@types/api/REST').APIInteractionData | import('../@types/api/REST').APIInteractionEditData | import('../@types/api/REST').APIMessageData} data - Data that's being sent.
+     * @param {import('../@types/api/REST').APIHTTPSMethods} method - REST Method.
      * 
-     * Running REST event
+     * @description Running REST event
      */
     async run(url, data, method) {
         if (this.counter === 50) {

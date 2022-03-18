@@ -24,6 +24,8 @@ const auth = {
 class WebSocketManager {
     constructor(client) {
         this.client = client
+        this.heartbeatTime = 0;
+        this.heartbeatACKTime = 0;
     }
 
     async connect(token) {
@@ -46,7 +48,11 @@ class WebSocketManager {
                         break;
                     case OPCODES.DISPATCH:
                         break;
+                    case OPCODES.HEARTBEAT: 
+                        this.heartbeatTime = Date.now();
+                        break;
                     case OPCODES.HEARTBEAT_ACK:
+                        this.heartbeatACKTime = Date.now();
                         break;
                 }
 
@@ -78,6 +84,8 @@ class WebSocketManager {
      * @param s -  last sequence number—s—received by the client
      * @documentation https://discord.com/developers/docs/topics/gateway#heartbeat
      * @returns - Heartbeat sent to Gateway
+     * 
+     * @private
      */
     heartbeatFunction(ms, s) {
         return setInterval(() => {
@@ -86,9 +94,20 @@ class WebSocketManager {
         }, ms);
     }
 
+    /**
+     * 
+     * @param {string} token @private 
+     * @returns - Websocket connection
+     * 
+     * @private
+     */
     async identify(token) {
         auth.d.token = token;
         return this.ws.send(JSON.stringify(auth))
+    }
+
+    get ping() {
+        return new Date((this.heartbeatACKTime - this.heartbeatTime));
     }
 
 }
